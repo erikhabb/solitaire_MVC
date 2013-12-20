@@ -1,0 +1,17 @@
+cardmodel.py:
+- model of a playing card
+
+cardmodeltest.py
+- test card model
+
+solitairemodel.py
+- model of a solitaire game
+
+solitairemodeltest.py
+- test solitaire game model
+
+solitaireview.py
+- basic text view of solitaire game
+
+solitairecontroller.py
+- playable solataire controller game, uses solitaire model and view
