@@ -1,7 +1,7 @@
 from cardmodel import Card
-from solitaremodel import SolitareModel
+from solitairemodel import SolitaireModel
 
-class SolitareView:
+class SolitaireView:
   def __init__(self, model):
     self.model = model
 

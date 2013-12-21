@@ -1,11 +1,11 @@
-from solitaremodel import SolitareModel
+from solitairemodel import SolitaireModel
 from cardmodel import Card
 import unittest
 
 class StartOfGame(unittest.TestCase):
   def setUp(self):
     # start game
-    self.game = SolitareModel()
+    self.game = SolitaireModel()
     self.game.newGame()
 
   def testCorrectNewGame(self):
@@ -56,7 +56,7 @@ class StartOfGame(unittest.TestCase):
 
     # should be back at the start
     self.assertEqual(self.game.canDealCard(), False)
-    self.assertRaises(SolitareModel.OutOfRangeError, self.game.didDealCard)
+    self.assertRaises(SolitaireModel.OutOfRangeError, self.game.didDealCard)
     self.assertEqual(self.game.canMoveWasteCardsIntoStock(), True)
     self.game.didMoveWasteCardsIntoStock()
     stock = self.game.getStock()
@@ -100,23 +100,23 @@ class StartOfGame(unittest.TestCase):
         self.game.newGame()
 
   def testOutOfRange(self):
-    self.assertRaises(SolitareModel.OutOfRangeError, self.game.getFoundation, -1)
-    self.assertRaises(SolitareModel.OutOfRangeError, self.game.getFoundation, 4)
-    self.assertRaises(SolitareModel.OutOfRangeError, self.game.getTableau, -1)
-    self.assertRaises(SolitareModel.OutOfRangeError, self.game.getTableau, 7)
+    self.assertRaises(SolitaireModel.OutOfRangeError, self.game.getFoundation, -1)
+    self.assertRaises(SolitaireModel.OutOfRangeError, self.game.getFoundation, 4)
+    self.assertRaises(SolitaireModel.OutOfRangeError, self.game.getTableau, -1)
+    self.assertRaises(SolitaireModel.OutOfRangeError, self.game.getTableau, 7)
     t = self.game.getTableau(0)
     self.assertEqual(len(t), 1)
-    self.assertRaises(SolitareModel.OutOfRangeError,
+    self.assertRaises(SolitaireModel.OutOfRangeError,
         self.game.canDropCardOnFoundation, -1, t[0])
-    self.assertRaises(SolitareModel.OutOfRangeError,
+    self.assertRaises(SolitaireModel.OutOfRangeError,
         self.game.canDropCardOnFoundation, 4, t[0])
-    self.assertRaises(SolitareModel.OutOfRangeError,
+    self.assertRaises(SolitaireModel.OutOfRangeError,
         self.game.didDropCardOnFoundation, -1, t[0])
-    self.assertRaises(SolitareModel.OutOfRangeError,
+    self.assertRaises(SolitaireModel.OutOfRangeError,
         self.game.didDropCardOnFoundation, 4, t[0])
-    self.assertRaises(SolitareModel.OutOfRangeError,
+    self.assertRaises(SolitaireModel.OutOfRangeError,
         self.game.canFlipCardOnTableau, -1)
-    self.assertRaises(SolitareModel.OutOfRangeError,
+    self.assertRaises(SolitaireModel.OutOfRangeError,
         self.game.canFlipCardOnTableau, -7)
 
 if __name__ == "__main__":

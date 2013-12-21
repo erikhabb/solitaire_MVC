@@ -1,7 +1,7 @@
 from cardmodel import Card
 import random
 
-class SolitareModel:
+class SolitaireModel:
   class OutOfRangeError(Exception): pass
 
   def __init__(self):
@@ -74,15 +74,16 @@ class SolitareModel:
       # - ACE if foundation is empty
       # - rank + 1 of same suit if foundation is not empty
       return self.isCardFaceUp(card) and \
-        (card in (self.tableau[i][-1] for i in range(7) \
-          if len(self.tableau[i]) != 0)) or \
-        (len(self.waste) != 0 and card == self.waste[-1]) or \
-        (card.rank == Card.ACE and \
-         card in (self.foundation[i][-1] for i in range(4) \
-         if i != index and len(self.foundation[i]) != 0)) and \
-        (len(self.foundation[index]) == 0 and card.rank == Card.ACE) or \
-        (len(self.foundation[index]) != 0 and \
-         card.rank == self.foundation[index][-1].rank + 1)
+        (any(card == self.tableau[i][-1] for i in range(7) \
+             if len(self.tableau[i]) != 0) or \
+         (len(self.waste) != 0 and card == self.waste[-1]) or \
+         (card.rank == Card.ACE and \
+           any(card == self.foundation[i][-1] for i in range(4) \
+               if i != index and len(self.foundation[i]) != 0))) and \
+        ((len(self.foundation[index]) == 0 and card.rank == Card.ACE) or \
+         (len(self.foundation[index]) != 0 and \
+          card.suit == self.foundation[index][-1].suit and \
+          card.rank == self.foundation[index][-1].rank + 1))
     else:
       raise self.OutOfRangeError, "index out of range"
 

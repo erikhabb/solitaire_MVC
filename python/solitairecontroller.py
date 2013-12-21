@@ -1,11 +1,12 @@
-from solitaremodel import SolitareModel
-from solitareview import SolitareView
+from solitairemodel import SolitaireModel
+# from solitaireviewhorz import SolitaireView
+from solitaireviewvert import SolitaireView
 from cardmodel import Card
 
-class SolitareController:
+class SolitaireController:
   def __init__(self):
-    self.model = SolitareModel()
-    self.view = SolitareView(self.model)
+    self.model = SolitaireModel()
+    self.view = SolitaireView(self.model)
     self.model.newGame()
 
     # build dictionary of text to cards
@@ -59,45 +60,47 @@ class SolitareController:
         else:
           self.view.stockFailed()
       elif (len(cmd) == 2):
+        unknownCommand = True
         if (cmd[0] == "flip"):
           if (cmd[1][0] == "t"):
-            index = int(cmd[1][1])
-            if self.model.canFlipCardOnTableau(index):
-              self.model.didFlipCardOnTableau(index)
-            else:
-              unknownCommand = True
-          else:
-            unknownCommand = True
-        elif ((cmd[1][0] == "f") or (cmd[1][0] == "t")) and \
-            (int(cmd[1][1]) in range(7)):
-          # does card exist
-          if (cmd[0] in self.cards):
-            index = int(cmd[1][1])
-            card = self.cards[cmd[0]]
-            foundation = True if cmd[1][0] == "f" else False
-
-            if foundation:
-              if self.model.canDropCardOnFoundation(index, card):
-                self.model.didDropCardOnFoundation(index, card)
-              else:
-                unknownCommand = True
-            else:
-              if self.model.canDropCardOnTableau(index, card):
-                self.model.didDropCardOnTableau(index, card)
-              else:
-                unknownCommand = True
-          else:
-            unknownCommand = True
-        else:
+            try:
+              index = int(cmd[1][1])
+              if self.model.canFlipCardOnTableau(index):
+                self.model.didFlipCardOnTableau(index)
+                unknownCommand = False
+            except:
+              pass
+        elif ((cmd[1][0] == "f") or (cmd[1][0] == "t")):
           unknownCommand = True
+          # is cmd[1] len 2 and ends in number?
+          try:
+            if (len(cmd[1]) == 2 and int(cmd[1][1]) in range(7)):
+              # does card exist
+              if (cmd[0] in self.cards):
+                index = int(cmd[1][1])
+                card = self.cards[cmd[0]]
+                foundation = True if cmd[1][0] == "f" else False
+
+                if foundation:
+                  if self.model.canDropCardOnFoundation(index, card):
+                    self.model.didDropCardOnFoundation(index, card)
+                    unknownCommand = False
+                else:
+                  if self.model.canDropCardOnTableau(index, card):
+                    self.model.didDropCardOnTableau(index, card)
+                    unknownCommand = False
+          except:
+            pass
       else:
         unknownCommand = True
 
       if (unknownCommand == True):
         self.view.unknownCommand()
 
-    self.view.gameWon()
+    if self.model.isGameWon():
+      self.view.draw()
+      self.view.gameWon()
 
 if __name__ == "__main__":
-  controller = SolitareController()
+  controller = SolitaireController()
 
